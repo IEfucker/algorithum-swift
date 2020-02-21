@@ -1,19 +1,13 @@
  
  var testArray:[Int] = [6, 3, 4, 13, 28, 1, 89, 3, 7, 376, 2901, 7, 9, 0, 77, 89]
  
- func arraySwap( arr:inout [Int],i:Int,j:Int){
-    let temp = arr[i]
-    arr[i]=arr[j]
-    arr[j]=temp
- }
- 
  func bubbleSort(source:[Int])->[Int]{
     var arr = source
     let len = arr.count
     for i in 0..<len-1{
         for j in 0..<len-i-1{
             if(arr[j]>arr[j+1]){
-                arraySwap(arr: &arr, i: j, j: j+1)
+                arr.swapAt(j, j+1)
             }
         }
     }
@@ -32,10 +26,9 @@
             if(arr[j]<arr[minIndex]){
                 minIndex = j
             }
-            
         }
         if(minIndex != i){
-            arraySwap(arr: &arr, i: i, j: minIndex)
+            arr.swapAt(i, minIndex)
         }
     }
     return arr
@@ -123,3 +116,44 @@
  
 // mergeSort(source: testArray)
  
+ func quickSort(_ source: inout [Int], _ left:Int?, _ right:Int?)->[Int]{
+    let len = source.count
+    var l = left
+    var r = right
+    if(left==nil){
+        l=0
+    }
+    if(right==nil){
+        r = len - 1
+    }
+    
+    if(len<2 || l! >= r!){
+        return source
+    }
+    
+    let partitionIndex = partition(&source, l!, r!)
+
+    if(l!<partitionIndex-1){
+        quickSort(&source, l, partitionIndex - 1)
+    }
+    if(partitionIndex+1<r!){
+        quickSort(&source, partitionIndex + 1, r)
+    }
+
+    return source
+ }
+ 
+ func partition(_ source: inout [Int], _ left:Int, _ right:Int)->Int{
+    let pivot = left
+    var index = pivot + 1
+    for i in index...right{
+        if(source[i]<source[pivot]){
+            source.swapAt(i,index)
+            index+=1
+        }
+    }
+    source.swapAt(pivot, index-1)
+    return index - 1
+ }
+ 
+ quickSort(&testArray,nil,nil)
