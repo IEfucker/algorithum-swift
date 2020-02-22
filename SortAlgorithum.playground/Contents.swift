@@ -156,4 +156,65 @@
     return index - 1
  }
  
- quickSort(&testArray,nil,nil)
+// quickSort(&testArray,nil,nil)
+ 
+ var len:Int = 0
+ func buildMaxHeap(_ source: inout [Int]){
+    len = source.count
+    var i = Int(len/2)
+    while(i>=0){
+        heapify(&source, i)
+        i-=1
+    }
+ }
+ func heapify(_ source: inout [Int], _ i:Int){
+    var largest = i
+    let left = i*2+1
+    let right = i*2+2
+    if(left < len && source[left]>source[largest]){
+        largest = left
+    }
+    if(right < len && source[right]>source[largest]){
+        largest = right
+    }
+    if(largest != i){
+        source.swapAt(largest, i)
+        heapify(&source, largest)
+    }
+    
+ }
+ 
+ func heapSort(_ source: inout [Int]){
+    buildMaxHeap(&source)
+    while(len>0){
+        source.swapAt(0, len-1)
+        len-=1
+        heapify(&source, 0)
+    }
+ }
+ 
+// heapSort(&testArray)
+
+ func countingSort(_ source:[Int])->[Int]{
+     var maxValue = source[0]
+     var arr:[Int] = []
+     for v in source{
+         if(v>maxValue){
+             maxValue = v
+         }
+     }
+     var buckets = Array(repeating: 0, count: maxValue+1)
+     for v in source {
+         buckets[v]+=1
+     }
+
+    for (index, _) in buckets.enumerated(){
+        while(buckets[index]>0){
+            arr.append(index)
+            buckets[index]-=1
+        }
+       }
+     return arr
+  }
+  
+  countingSort(testArray)
